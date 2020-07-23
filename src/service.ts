@@ -1,25 +1,26 @@
 import axios from "axios";
 import { Item } from "./types/item.types";
 
-const baseUrl = "https://localhost:3030/";
-const categoriesUrl = `${baseUrl}categories`;
+const baseUrl = "https://localhost:3030";
+export const instance = axios.create({
+  baseURL: baseUrl,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
 export const ItemService = {
-  get: () => axios.get(baseUrl),
+  get: () => instance.get("/"),
   getByCategory: (category: string) =>
-    axios.get(
-      `${baseUrl}/:${category}
-    `,
-      { params: { category } }
-    ),
-  post: (item: Item) => axios.post(baseUrl, { item }),
-  put: (item: Item) => axios.put(baseUrl, { item }),
-  delete: (id: number) => axios.put(baseUrl, { data: { id } }),
+    instance.get("/:category", { params: { category } }),
+  post: (item: Item) => instance.post("/", item),
+  put: (item: Item) => instance.put("/", item),
+  delete: (id: number) => instance.put("/", { data: { id } }),
 };
 
 export const CategoryService = {
-  get: () => axios.get(categoriesUrl),
-  post: (category: string) => axios.post(categoriesUrl, { category }),
+  get: () => instance.get("/categories"),
+  post: (category: string) => instance.post("/categories", category),
   delete: (category: string) =>
-    axios.delete(categoriesUrl, { data: { category } }),
+    instance.delete("/categories", { data: { category } }),
 };
