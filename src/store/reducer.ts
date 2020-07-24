@@ -5,6 +5,15 @@ const initialState = {
   categories: [],
   loadingOfCategories: false,
   errorOfCategories: null,
+  tempItemId: 0,
+  itemToAddEdit: { id: 0, category: "", name: "", buyPrice: 0, price: 0 },
+  itemToDelete: { id: 0, category: "", name: "", buyPrice: 0, price: 0 },
+  categoryToDelete: "",
+  isItemAdding: false,
+  isItemDeleting: false,
+  isCategoryAdding: false,
+  isCategoryDeleting: false,
+  nextId: 0,
 };
 export default (state = initialState, action: any) => {
   switch (action.type) {
@@ -47,6 +56,43 @@ export default (state = initialState, action: any) => {
         categories: [],
         loadingOfCategories: false,
         errorOfCategories: action.error,
+      };
+    case "TOGGLE_ADD_ITEM":
+      return {
+        ...state,
+        isItemAdding: !state.isItemAdding,
+      };
+    case "TOGGLE_DELETE_ITEM":
+      return {
+        ...state,
+        isItemDeleting: !state.isItemDeleting,
+      };
+    case "TOGGLE_ADD_CATEGORY":
+      return {
+        ...state,
+        isCategoryAdding: !state.isCategoryAdding,
+      };
+    case "TOGGLE_DELETE_CATEGORY":
+      return {
+        ...state,
+        isCategoryDeleting: !state.isCategoryDeleting,
+      };
+    case "RESET_ITEM_TO_EDIT":
+      return {
+        ...state,
+        itemToAddEdit: {
+          id: state.nextId,
+          category: "",
+          name: "",
+          buyPrice: 0,
+          price: 0,
+        },
+      };
+    case "SET_NEXT_ID":
+      return {
+        ...state,
+        nextId: action.payload,
+        itemToAddEdit: { ...state.itemToAddEdit, id: action.payload },
       };
     default:
       return { ...state };

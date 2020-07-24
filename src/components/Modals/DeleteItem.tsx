@@ -1,29 +1,33 @@
 import React from "react";
 
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Button,
-} from "@material-ui/core";
+import { useDispatch } from "react-redux";
+import { ItemService } from "../../service";
+import { connect } from "react-redux";
+import { getItems, getCategories } from "../../store/actions";
+import { Dialog, DialogActions, Button, DialogTitle } from "@material-ui/core";
 
-const DialogComponent = () => {
+const DialogComponent = ({ item, open }: any) => {
+  const dispatch = useDispatch();
+  const handleDeleteItem = () => {
+    ItemService.delete(item.id);
+    dispatch(getCategories());
+    dispatch(getItems());
+  };
   return (
-    <Dialog open={true}>
-      <DialogTitle>Хотите удалить категорию?</DialogTitle>
-      <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-          Все товары этой категории будут помечены "Без категории"
-        </DialogContentText>
-      </DialogContent>
+    <Dialog open={open}>
+      <DialogTitle>Точно удалить товар {item.name}?</DialogTitle>
       <DialogActions>
-        <Button color="primary">Да</Button>
+        <Button color="primary" onClick={handleDeleteItem}>
+          Да
+        </Button>
         <Button color="primary">Нет</Button>
       </DialogActions>
     </Dialog>
   );
 };
+const mapStateToProps = (state: any) => ({
+  item: state.itemToDelete,
+  open: state.isItemDeleting,
+});
 
-export default DialogComponent;
+export default connect(mapStateToProps)(DialogComponent);

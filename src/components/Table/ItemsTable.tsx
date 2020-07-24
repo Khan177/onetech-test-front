@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 
+import { connect, useDispatch } from "react-redux";
 import "./ItemsTable.css";
 import {
   Table,
@@ -11,24 +12,17 @@ import {
   Button,
   IconButton,
 } from "@material-ui/core";
+import { ItemService } from "../../service";
+import { getItems } from "../../store/actions";
+import { Item } from "../../types/item.types";
 
 import { Delete } from "@material-ui/icons";
 
-const ItemsTable = () => {
-  function createData(
-    category: any,
-    id: any,
-    name: any,
-    buyPrice: any,
-    price: any
-  ) {
-    return { category, id, name, buyPrice, price };
-  }
-
-  const rows = [
-    createData("Первая", 1, "khan", 500, 1000),
-    createData("Первая", 1, "khan", 500, 1000),
-  ];
+const ItemsTable = ({ items }: any) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getItems());
+  }, [dispatch]);
   return (
     <div className="table">
       <TableContainer>
@@ -44,8 +38,8 @@ const ItemsTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <TableRow key={row.name}>
+            {items.map((item: Item) => (
+              <TableRow key={item.id}>
                 <TableCell component="th" scope="row">
                   <IconButton
                     aria-label="delete"
@@ -54,17 +48,21 @@ const ItemsTable = () => {
                   >
                     <Delete />
                   </IconButton>
-                  {row.category}
+                  {item.category}
                 </TableCell>
-                <TableCell align="right">{row.id}</TableCell>
-                <TableCell align="right">{row.name}</TableCell>
-                <TableCell align="right">{row.buyPrice}</TableCell>
-                <TableCell align="right">{row.price}</TableCell>
+                <TableCell align="right">{item.id}</TableCell>
+                <TableCell align="right">{item.name}</TableCell>
+                <TableCell align="right">{item.buyPrice}</TableCell>
+                <TableCell align="right">{item.price}</TableCell>
                 <TableCell align="center">
                   <Button
                     variant="contained"
                     color="secondary"
                     style={{ marginRight: "10px" }}
+                    onClick={() => {
+                      ItemService.delete(item.id);
+                      dispatch(getItems());
+                    }}
                   >
                     Удалить
                   </Button>
@@ -80,4 +78,7 @@ const ItemsTable = () => {
     </div>
   );
 };
-export default ItemsTable;
+const mapStateToProps = (state: any) => ({
+  items: state.items,
+});
+export default connect(mapStateToProps)(ItemsTable);
