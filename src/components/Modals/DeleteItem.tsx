@@ -9,10 +9,11 @@ import { Dialog, DialogActions, Button, DialogTitle } from "@material-ui/core";
 const DialogComponent = ({ item, open }: any) => {
   const dispatch = useDispatch();
   const handleDeleteItem = () => {
-    ItemService.delete(item.id);
-    dispatch(getCategories());
-    dispatch(getItems());
-    dispatch(toggleDeleteItem());
+    ItemService.delete(item.id).then((res) => {
+      dispatch(getCategories());
+      dispatch(getItems());
+      dispatch(toggleDeleteItem());
+    });
   };
   return (
     <Dialog
