@@ -28,7 +28,12 @@ const DialogComponent = ({ category, open }: any) => {
     });
   };
   return (
-    <Dialog open={open}>
+    <Dialog
+      open={open}
+      onBackdropClick={() => {
+        dispatch(toggleDeleteCategory());
+      }}
+    >
       <DialogTitle>Хотите удалить категорию?</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
@@ -39,7 +44,14 @@ const DialogComponent = ({ category, open }: any) => {
         <Button color="primary" onClick={handleDeleteCategory}>
           Да
         </Button>
-        <Button color="primary">Нет</Button>
+        <Button
+          color="primary"
+          onClick={() => {
+            dispatch(toggleDeleteCategory());
+          }}
+        >
+          Нет
+        </Button>
       </DialogActions>
     </Dialog>
   );

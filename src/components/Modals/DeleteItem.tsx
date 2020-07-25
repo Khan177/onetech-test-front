@@ -15,13 +15,25 @@ const DialogComponent = ({ item, open }: any) => {
     dispatch(toggleDeleteItem());
   };
   return (
-    <Dialog open={open}>
+    <Dialog
+      open={open}
+      onBackdropClick={() => {
+        dispatch(toggleDeleteItem());
+      }}
+    >
       <DialogTitle>Точно удалить товар {item.name}?</DialogTitle>
       <DialogActions>
         <Button color="primary" onClick={handleDeleteItem}>
           Да
         </Button>
-        <Button color="primary">Нет</Button>
+        <Button
+          color="primary"
+          onClick={() => {
+            dispatch(toggleDeleteItem());
+          }}
+        >
+          Нет
+        </Button>
       </DialogActions>
     </Dialog>
   );

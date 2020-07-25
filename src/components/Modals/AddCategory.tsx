@@ -25,7 +25,13 @@ const DialogComponent = ({ open }: any) => {
     });
   };
   return (
-    <Dialog open={open}>
+    <Dialog
+      open={open}
+      onBackdropClick={() => {
+        dispatch(toggleAddCategory());
+        setNewCategory("");
+      }}
+    >
       <DialogTitle>Добавить категорию</DialogTitle>
       <DialogContent>
         <TextField
