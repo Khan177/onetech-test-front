@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Item } from "./types/item.types";
 
-const baseUrl = "http://localhost:3030";
+const baseUrl = "https://onetech-test-back.herokuapp.com";
 export const instance = axios.create({
   baseURL: baseUrl,
   headers: {
