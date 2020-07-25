@@ -15,6 +15,20 @@ export const getItems = () => {
       .catch((err: string) => dispatch(failure(err)));
   };
 };
+export const getItemsByCategory = (category: string) => {
+  const request = () => ({ type: "GET_ITEMS_REQUEST" });
+  const success = (data: Item[]) => ({
+    type: "GET_ITEMS_SUCCESS",
+    payload: data,
+  });
+  const failure = (err: string) => ({ type: "GET_ITEMS_FAILURE", error: err });
+  return (dispatch: CallableFunction) => {
+    dispatch(request());
+    ItemService.getByCategory(category)
+      .then((res: any) => dispatch(success(res.data)))
+      .catch((err: string) => dispatch(failure(err)));
+  };
+};
 
 export const getCategories = () => {
   const request = () => ({ type: "GET_CATEGORIES_REQUEST" });
@@ -63,5 +77,23 @@ export const setNextId = (id: number) => {
 export const resetItemToEdit = () => {
   return {
     type: "RESET_ITEM_TO_EDIT",
+  };
+};
+export const setItemToEdit = (item: Item) => {
+  return {
+    type: "SET_ITEM_TO_EDIT",
+    payload: item,
+  };
+};
+export const setItemToDelete = (item: Item) => {
+  return {
+    type: "SET_ITEM_TO_DELETE",
+    payload: item,
+  };
+};
+export const setCategoryToDelete = (category: string) => {
+  return {
+    type: "SET_CATEGORY_TO_DELETE",
+    payload: category,
   };
 };

@@ -3,7 +3,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { ItemService } from "../../service";
 import { connect } from "react-redux";
-import { getItems, getCategories } from "../../store/actions";
+import { getItems, getCategories, toggleDeleteItem } from "../../store/actions";
 import { Dialog, DialogActions, Button, DialogTitle } from "@material-ui/core";
 
 const DialogComponent = ({ item, open }: any) => {
@@ -12,6 +12,7 @@ const DialogComponent = ({ item, open }: any) => {
     ItemService.delete(item.id);
     dispatch(getCategories());
     dispatch(getItems());
+    dispatch(toggleDeleteItem());
   };
   return (
     <Dialog open={open}>

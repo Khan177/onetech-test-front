@@ -23,9 +23,6 @@ import * as Yup from "yup";
 
 const DialogComponent = ({ item, categories, open }: any) => {
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getCategories());
-  }, [dispatch]);
   const form = useFormik({
     initialValues: { ...item },
     validationSchema: Yup.object({
@@ -34,20 +31,31 @@ const DialogComponent = ({ item, categories, open }: any) => {
       price: Yup.string().required("Введите цену"),
     }),
     onSubmit: (values) => {
-      ItemService.post({ ...values, id: item.id }).then((res) =>
-        dispatch(getItems())
-      );
-      ItemService.getNextId().then((res: any) => {
-        dispatch(setNextId(res.data));
+      ItemService.post({ ...values, id: item.id }).then((res) => {
+        dispatch(getItems());
+        ItemService.getNextId().then((res: any) => {
+          dispatch(setNextId(res.data));
+        });
       });
       dispatch(toggleAddItem());
       dispatch(resetItemToEdit());
-      form.setValues({ ...item });
       form.setTouched({ name: false, buyPrice: false, price: false });
     },
   });
+  useEffect(() => {
+    dispatch(getCategories());
+  }, [dispatch]);
   return (
-    <Dialog open={open}>
+    <Dialog
+      open={open}
+      onBackdropClick={() => {
+        dispatch(toggleAddItem());
+        dispatch(resetItemToEdit());
+      }}
+      onEnter={() => {
+        form.setValues({ ...item });
+      }}
+    >
       <DialogTitle>Добавить/Изменить Товар</DialogTitle>
       <DialogContent>
         <form onSubmit={form.handleSubmit}>

@@ -12,8 +12,16 @@ import {
   Button,
   IconButton,
 } from "@material-ui/core";
-import { ItemService } from "../../service";
-import { getItems } from "../../store/actions";
+import {
+  toggleDeleteItem,
+  getItems,
+  getItemsByCategory,
+  setItemToDelete,
+  toggleDeleteCategory,
+  setCategoryToDelete,
+  setItemToEdit,
+  toggleAddItem,
+} from "../../store/actions";
 import { Item } from "../../types/item.types";
 
 import { Delete } from "@material-ui/icons";
@@ -41,14 +49,28 @@ const ItemsTable = ({ items }: any) => {
             {items.map((item: Item) => (
               <TableRow key={item.id}>
                 <TableCell component="th" scope="row">
-                  <IconButton
-                    aria-label="delete"
-                    color="secondary"
-                    style={{ marginRight: "10px" }}
+                  {item.category !== "Без названия" && (
+                    <IconButton
+                      aria-label="delete"
+                      color="secondary"
+                      style={{ marginRight: "10px" }}
+                      onClick={() => {
+                        dispatch(setCategoryToDelete(item.category));
+                        dispatch(toggleDeleteCategory());
+                      }}
+                    >
+                      <Delete />
+                    </IconButton>
+                  )}
+                  <Button
+                    color="primary"
+                    onClick={() => {
+                      dispatch(getItemsByCategory(item.category));
+                    }}
+                    style={{ textTransform: "none" }}
                   >
-                    <Delete />
-                  </IconButton>
-                  {item.category}
+                    {item.category}
+                  </Button>
                 </TableCell>
                 <TableCell align="right">{item.id}</TableCell>
                 <TableCell align="right">{item.name}</TableCell>
@@ -60,13 +82,20 @@ const ItemsTable = ({ items }: any) => {
                     color="secondary"
                     style={{ marginRight: "10px" }}
                     onClick={() => {
-                      ItemService.delete(item.id);
-                      dispatch(getItems());
+                      dispatch(setItemToDelete(item));
+                      dispatch(toggleDeleteItem());
                     }}
                   >
                     Удалить
                   </Button>
-                  <Button variant="contained" color="primary">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                      dispatch(setItemToEdit(item));
+                      dispatch(toggleAddItem());
+                    }}
+                  >
                     Изменить
                   </Button>
                 </TableCell>

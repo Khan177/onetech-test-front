@@ -4,6 +4,7 @@ import "./Header.css";
 import { Button } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { ItemService } from "../../service";
+import { getItems } from "../../store/actions";
 
 import { setNextId } from "../../store/actions";
 
@@ -19,8 +20,12 @@ const Header = () => {
   return (
     <div className="header">
       <div className="header-buttons">
-        <Button variant="outlined" color="primary">
-          Показать все
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={() => dispatch(getItems())}
+        >
+          Показать все категории
         </Button>
         <Button
           variant="contained"

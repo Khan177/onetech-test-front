@@ -94,6 +94,21 @@ export default (state = initialState, action: any) => {
         nextId: action.payload,
         itemToAddEdit: { ...state.itemToAddEdit, id: action.payload },
       };
+    case "SET_ITEM_TO_DELETE":
+      return {
+        ...state,
+        itemToDelete: action.payload,
+      };
+    case "SET_CATEGORY_TO_DELETE":
+      return {
+        ...state,
+        categoryToDelete: action.payload,
+      };
+    case "SET_ITEM_TO_EDIT":
+      return {
+        ...state,
+        itemToAddEdit: action.payload,
+      };
     default:
       return { ...state };
   }

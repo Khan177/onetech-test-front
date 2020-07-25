@@ -19,9 +19,10 @@ const DialogComponent = ({ open }: any) => {
   const dispatch = useDispatch();
   const [newCategory, setNewCategory] = useState("");
   const handleAddCategory = () => {
-    CategoryService.post(newCategory);
-    dispatch(toggleAddCategory());
-    dispatch(getCategories());
+    CategoryService.post(newCategory).then((res) => {
+      dispatch(getCategories());
+      dispatch(toggleAddCategory());
+    });
   };
   return (
     <Dialog open={open}>

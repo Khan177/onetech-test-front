@@ -13,8 +13,8 @@ export const ItemService = {
   get: () => instance.get("/"),
   getNextId: () => instance.get("/item"),
   getByCategory: (category: string) =>
-    instance.get("/:category", { params: { category } }),
-  post: (item: Item) => instance.post("/items", item),
+    instance.get("/category", { params: { category } }),
+  post: (item: Item) => instance.put("/items", item),
   put: (item: Item) => instance.put("/items", item),
   delete: (id: number) => instance.delete("/items", { data: { id } }),
 };
