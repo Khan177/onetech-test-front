@@ -6,6 +6,11 @@
 }
 .header-buttons {
   display: flex;
-  justify-content: space-between;
-  width: 100%;
+  justify-content: space-evenly;
+  width: 50%;
+}
+.header-logo {
+  display: flex;
+  width: 50%;
+  align-items: center;
 }

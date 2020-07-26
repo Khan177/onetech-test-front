@@ -28,7 +28,7 @@ const DialogComponent = ({ item, categories, open }: any) => {
     validationSchema: Yup.object({
       name: Yup.string().required("Введите название товара"),
       buyPrice: Yup.number().required("Введите цену закупа"),
-      price: Yup.string().required("Введите цену"),
+      price: Yup.number().required("Введите цену"),
     }),
     onSubmit: (values) => {
       ItemService.post({ ...values, id: item.id }).then((res) => {
